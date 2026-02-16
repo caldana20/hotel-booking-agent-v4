@@ -1,0 +1,93 @@
+Metadata-Version: 2.4
+Name: hotel-shopping-agent
+Version: 0.1.0
+Summary: Hotel Shopping AI Agent MVP (LangGraph + FastAPI + Postgres)
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.110
+Requires-Dist: uvicorn[standard]>=0.27
+Requires-Dist: pydantic>=2.6
+Requires-Dist: pydantic-settings>=2.2
+Requires-Dist: httpx>=0.27
+Requires-Dist: langgraph>=0.2.0
+Requires-Dist: langchain-core>=0.3.0
+Requires-Dist: langchain-openai>=0.3.0
+Requires-Dist: openai>=1.40.0
+Requires-Dist: sqlalchemy[asyncio]>=2.0.25
+Requires-Dist: asyncpg>=0.29
+Requires-Dist: psycopg[binary]>=3.1
+Requires-Dist: alembic>=1.13
+Requires-Dist: python-dateutil>=2.9
+Requires-Dist: orjson>=3.9
+Requires-Dist: structlog>=24.1
+Requires-Dist: prometheus-client>=0.20
+Requires-Dist: opentelemetry-api>=1.24
+Requires-Dist: opentelemetry-sdk>=1.24
+Requires-Dist: opentelemetry-exporter-otlp>=1.24
+Requires-Dist: opentelemetry-instrumentation-fastapi>=0.45b0
+Requires-Dist: opentelemetry-instrumentation-httpx>=0.45b0
+Requires-Dist: opentelemetry-instrumentation-sqlalchemy>=0.45b0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23; extra == "dev"
+Requires-Dist: testcontainers>=4.7; extra == "dev"
+Requires-Dist: requests>=2.31; extra == "dev"
+Requires-Dist: ruff>=0.6; extra == "dev"
+
+# hotel-booking-agent-v4
+
+End-to-end MVP: Hotel Shopping AI Agent (LangGraph + FastAPI + Postgres) with typed tool endpoints, deterministic seeded internal DB, observability (OTEL + Prometheus + JSON logs), tests, evals, and a Next.js webchat UI with one-click Jaeger trace links.
+
+## Quickstart (Local)
+
+Prereqs:
+- Docker Desktop
+- Python 3.11+
+- Node 20+ (optional if using Docker for web)
+
+Start the stack:
+```bash
+docker compose -f infra/docker-compose.yml up --build
+```
+
+Apply migrations:
+```bash
+alembic -c db/migrations/alembic.ini upgrade head
+```
+
+Seed the DB:
+```bash
+python -m db.seed
+```
+
+Run tests:
+```bash
+pytest
+```
+
+Run evals:
+```bash
+python -m evals.run --golden tests/replay/golden_sessions.json --cases evals/cases.json --out evals/out.json
+```
+
+Local URLs:
+- Webchat UI: http://localhost:3000
+- Agent API: http://localhost:8000
+- Tools API: http://localhost:8001
+- Jaeger: http://localhost:16686
+
+## Curl
+
+Agent chat:
+```bash
+curl -s localhost:8000/chat \
+  -X POST -H 'content-type: application/json' \
+  -d '{"session_id":null,"user_id":"u1","message":"Find me a hotel in Austin Mar 10-12 for 2 adults, budget under 250"}'
+```
+
+Tools:
+```bash
+curl -s localhost:8001/tools/search_candidates \
+  -X POST -H 'content-type: application/json' \
+  -d '{"tenant_id":"t_default","location":{"city":"Austin"},"check_in":"2026-03-10","check_out":"2026-03-12","occupancy":{"adults":2,"children":0,"rooms":1},"hard_filters":{"max_price":250}}'
+```

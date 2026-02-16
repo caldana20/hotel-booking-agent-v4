@@ -1,0 +1,76 @@
+{
+  "total": 12,
+  "passed": 7,
+  "results": [
+    {
+      "name": "austin_budget_refundable",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "name": "seattle_weekend",
+      "passed": false,
+      "failures": [
+        "select_first_offer_but_no_offer_id_seen"
+      ]
+    },
+    {
+      "name": "chicago_value",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "name": "san_diego_family",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "name": "austin_star_filter",
+      "passed": false,
+      "failures": [
+        "select_first_offer_but_no_offer_id_seen"
+      ]
+    },
+    {
+      "name": "seattle_parking",
+      "passed": false,
+      "failures": [
+        "select_first_offer_but_no_offer_id_seen"
+      ]
+    },
+    {
+      "name": "chicago_breakfast",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "name": "san_diego_pet_friendly",
+      "passed": false,
+      "failures": [
+        "select_first_offer_but_no_offer_id_seen"
+      ]
+    },
+    {
+      "name": "austin_simple",
+      "passed": false,
+      "failures": [
+        "select_first_offer_but_no_offer_id_seen"
+      ]
+    },
+    {
+      "name": "seattle_gym_wifi",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "name": "missing_city_clarification_once",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "name": "missing_dates_clarification_once",
+      "passed": true,
+      "failures": []
+    }
+  ]
+}

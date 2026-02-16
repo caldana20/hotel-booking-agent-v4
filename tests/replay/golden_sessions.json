@@ -1,0 +1,73 @@
+[
+  {
+    "name": "austin_budget_refundable",
+    "turns": [
+      { "message": "Find me a hotel in Austin __TODAY_PLUS_24__ to __TODAY_PLUS_26__ for 2 adults, 1 room under $1200 refundable preferred" },
+      { "message": "__SELECT_FIRST_OFFER__" }
+    ]
+  },
+  {
+    "name": "seattle_weekend",
+    "turns": [
+      { "message": "Seattle __TODAY_PLUS_31__ to __TODAY_PLUS_33__, 2 adults, 1 room, max $1200" },
+      { "message": "__SELECT_FIRST_OFFER__" }
+    ]
+  },
+  {
+    "name": "chicago_value",
+    "turns": [
+      { "message": "Chicago __TODAY_PLUS_38__ to __TODAY_PLUS_40__ for 2 adults, 1 room under $1200" },
+      { "message": "__SELECT_FIRST_OFFER__" }
+    ]
+  },
+  {
+    "name": "san_diego_family",
+    "turns": [
+      { "message": "San Diego __TODAY_PLUS_45__ to __TODAY_PLUS_47__ for 2 adults, 1 room under $2500 with pool" },
+      { "message": "__SELECT_FIRST_OFFER__" }
+    ]
+  },
+  {
+    "name": "austin_star_filter",
+    "turns": [
+      { "message": "Austin __TODAY_PLUS_27__ to __TODAY_PLUS_29__ for 2 adults, 1 room under $2500" },
+      { "message": "__SELECT_FIRST_OFFER__" }
+    ]
+  },
+  {
+    "name": "seattle_parking",
+    "turns": [
+      { "message": "Find me a hotel in Seattle __TODAY_PLUS_34__ to __TODAY_PLUS_36__ for 2 adults, 1 room under $1500 with parking" },
+      { "message": "__SELECT_FIRST_OFFER__" }
+    ]
+  },
+  {
+    "name": "chicago_breakfast",
+    "turns": [
+      { "message": "Chicago __TODAY_PLUS_41__ to __TODAY_PLUS_43__ for 2 adults, 1 room under $2500" },
+      { "message": "__SELECT_FIRST_OFFER__" }
+    ]
+  },
+  {
+    "name": "san_diego_pet_friendly",
+    "turns": [
+      { "message": "San Diego __TODAY_PLUS_49__ to __TODAY_PLUS_51__ for 2 adults, 1 room under $2500" },
+      { "message": "__SELECT_FIRST_OFFER__" }
+    ]
+  },
+  {
+    "name": "austin_simple",
+    "turns": [
+      { "message": "Austin __TODAY_PLUS_29__ to __TODAY_PLUS_31__ for 2 adults, 1 room" },
+      { "message": "__SELECT_FIRST_OFFER__" }
+    ]
+  },
+  {
+    "name": "seattle_gym_wifi",
+    "turns": [
+      { "message": "Seattle __TODAY_PLUS_36__ to __TODAY_PLUS_38__ 2 adults, 1 room under $1500 with wifi and gym" },
+      { "message": "__SELECT_FIRST_OFFER__" }
+    ]
+  }
+]
+

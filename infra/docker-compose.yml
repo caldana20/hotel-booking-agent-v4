@@ -1,0 +1,116 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: hotel
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d hotel"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.54
+    ports:
+      - "16686:16686" # UI
+      - "14250:14250" # gRPC collector
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+      LOG_LEVEL: "info"
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.99.0
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "9464:9464"   # Prometheus exporter (collector metrics)
+    depends_on:
+      - jaeger
+
+  migrate:
+    build:
+      context: ..
+      dockerfile: services/agent/Dockerfile
+    environment:
+      # Alembic uses sync driver.
+      DATABASE_URL: postgresql+psycopg://app:app@postgres:5432/hotel
+      DEFAULT_TENANT_ID: t_default
+    command: ["alembic", "-c", "db/migrations/alembic.ini", "upgrade", "head"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  tools:
+    build:
+      context: ..
+      dockerfile: services/tools/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+asyncpg://app:app@postgres:5432/hotel
+      DEFAULT_TENANT_ID: t_default
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_SERVICE_NAME: tools
+      LOG_LEVEL: info
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      otel-collector:
+        condition: service_started
+
+  agent:
+    build:
+      context: ..
+      dockerfile: services/agent/Dockerfile
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://app:app@postgres:5432/hotel
+      DEFAULT_TENANT_ID: t_default
+      TOOLS_BASE_URL: http://tools:8001
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_SERVICE_NAME: agent
+      LOG_LEVEL: info
+      ADMIN_TOKEN: dev-admin
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      tools:
+        condition: service_started
+      otel-collector:
+        condition: service_started
+
+  web:
+    build:
+      context: ..
+      dockerfile: services/web/Dockerfile
+    environment:
+      NEXT_PUBLIC_AGENT_BASE_URL: http://localhost:8000
+      ADMIN_TOKEN: dev-admin
+    ports:
+      - "3000:3000"
+    depends_on:
+      agent:
+        condition: service_started
+
+volumes:
+  pgdata:
+

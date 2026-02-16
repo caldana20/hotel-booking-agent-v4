@@ -1,0 +1,95 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: #0b0f14;
+  color: #e6edf3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: #7dd3fc;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 320px 1fr 360px;
+  height: 100vh;
+}
+
+.panel {
+  border-right: 1px solid #223;
+  padding: 12px;
+  overflow: auto;
+}
+
+.panelRight {
+  border-left: 1px solid #223;
+  padding: 12px;
+  overflow: auto;
+}
+
+.card {
+  border: 1px solid #223;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #0f1720;
+}
+
+.muted {
+  color: #9aa4af;
+  font-size: 12px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #223;
+  background: #0b1220;
+  color: #e6edf3;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.btn {
+  border: 1px solid #335;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #111a27;
+  color: #e6edf3;
+}
+
+.btnPrimary {
+  background: #1f3b57;
+  border-color: #2b5c89;
+}
+
+.pill {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #335;
+  background: #0b1220;
+  font-size: 12px;
+}
+

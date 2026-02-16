@@ -1,0 +1,88 @@
+[
+  {
+    "name": "missing_city_clarification_once",
+    "turns": [
+      { "message": "Need a hotel __TODAY_PLUS_24__ to __TODAY_PLUS_26__ for 2 adults under $250" },
+      { "message": "Austin __TODAY_PLUS_24__ to __TODAY_PLUS_26__" }
+    ]
+  },
+  {
+    "name": "missing_dates_clarification_once",
+    "turns": [
+      { "message": "Find me a hotel in Seattle for 2 adults under $300" },
+      { "message": "Seattle __TODAY_PLUS_31__ to __TODAY_PLUS_33__" }
+    ]
+  },
+  {
+    "name": "relative_next_week_then_one_adult_does_not_reask_adults",
+    "turns": [
+      {
+        "message": "find hotel in Austin for the next week",
+        "assert": { "agent_state": "COLLECT_CONSTRAINTS", "regex": ["rooms?"] }
+      },
+      {
+        "message": "one adult",
+        "assert": { "agent_state": "COLLECT_CONSTRAINTS", "regex": ["rooms?"], "not_regex": ["how\\s+many\\s+adults?"] }
+      }
+    ]
+  },
+  {
+    "name": "carry_forward_city_after_dates_provided",
+    "turns": [
+      {
+        "message": "find a hotel in Austin next month, 2 day stay",
+        "assert": { "agent_state": "COLLECT_CONSTRAINTS" }
+      },
+      {
+        "message": "Mar 10-12",
+        "assert": { "agent_state": "COLLECT_CONSTRAINTS", "not_regex": ["what\\s+.*city"] }
+      }
+    ]
+  },
+  {
+    "name": "next_week_produces_concrete_dates",
+    "turns": [
+      {
+        "message": "book a hotel in Austin next week",
+        "assert": { "agent_state": "COLLECT_CONSTRAINTS", "constraints": { "required_keys": ["check_in", "check_out"] } }
+      }
+    ]
+  },
+  {
+    "name": "next_month_with_2_day_stay_produces_concrete_dates",
+    "turns": [
+      {
+        "message": "find a hotel in Austin for next month, 2 day stay",
+        "assert": {
+          "agent_state": "COLLECT_CONSTRAINTS",
+          "constraints": { "required_keys": ["check_in", "check_out"], "stay_len_days": 2 }
+        }
+      }
+    ]
+  },
+  {
+    "name": "next_week_from_now_with_3_day_stay_produces_concrete_dates",
+    "turns": [
+      {
+        "message": "find three star hotel in seattle next week from now 3 day stay one adult and room",
+        "assert": {
+          "constraints": { "required_keys": ["check_in", "check_out"], "stay_len_days": 3 },
+          "not_regex": ["check-?in\\s+and\\s+check-?out\\s+dates", "what\\s+are\\s+your\\s+check-?in"]
+        }
+      }
+    ]
+  },
+  {
+    "name": "next_week_from_now_with_3_day_stay_and_star_filter_produces_concrete_dates",
+    "turns": [
+      {
+        "message": "find four star hotels (exactly) in seattle next week from now 3 day stay one adult and room",
+        "assert": {
+          "constraints": { "required_keys": ["check_in", "check_out"], "stay_len_days": 3 },
+          "not_regex": ["check-?in\\s+and\\s+check-?out\\s+dates", "what\\s+are\\s+your\\s+check-?in"]
+        }
+      }
+    ]
+  }
+]
+
